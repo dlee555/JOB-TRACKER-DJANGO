@@ -3,7 +3,7 @@
     pipenv install python-dotenv - install dotenv
     pipenv shell !!! TO ENTER DJANGO SHELL (HIGHLY FORGOTTEN STEP) !!!
 
-> vscode python intepreter changed to local project Django intepreter
+    > vscode python intepreter changed to local project Django intepreter
 
 ### Django apps created
     python manage.py startapp accounts
