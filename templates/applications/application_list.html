@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Applications · JobTracker{% endblock %}
+
+{% block content %}
+<h2>Your Applications</h2>
+
+<!-- Filter bar submits as GET so the URL reflects filters (shareable/reload-safe) -->
+<form method="get" style="display:flex; gap:.5rem; align-items:center; flex-wrap: wrap;">
+  <input type="search" name="q" placeholder="Search company or job title" value="{{ q }}">
+  <select name="status">
+    <option value="all" {% if current_status == "all" %}selected{% endif %}>All statuses</option>
+    {% for val, label in STATUS_CHOICES %}
+      <option value="{{ val }}" {% if current_status == val %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Filter</button>
+  <a href="{% url 'applications:create' %}">+ Add Application</a>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th><th>Company</th><th>Job Title</th><th>Status</th><th></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for app in applications %}
+    <tr>
+      <td>{{ app.date_applied }}</td>
+      <td>
+        {% if app.application_link %}
+          <!-- rel="noopener" for security when opening new tabs -->
+          <a href="{{ app.application_link }}" target="_blank" rel="noopener">{{ app.company }}</a>
+        {% else %}
+          {{ app.company }}
+        {% endif %}
+      </td>
+      <td>{{ app.job_title }}</td>
+      <td>{{ app.get_status_display }}</td> <!-- display label from choices -->
+      <td>
+        <a href="{% url 'applications:update' app.pk %}">Edit</a> ·
+        <a href="{% url 'applications:delete' app.pk %}">Delete</a>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">No applications yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<!-- Simple pagination controls -->
+{% if is_paginated %}
+<nav>
+  {% if page_obj.has_previous %}
+    <a href="?q={{ q }}&status={{ current_status }}&page={{ page_obj.previous_page_number }}">Prev</a>
+  {% endif %}
+  <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}
+    <a href="?q={{ q }}&status={{ current_status }}&page={{ page_obj.next_page_number }}">Next</a>
+  {% endif %}
+</nav>
+{% endif %}
+{% endblock %}

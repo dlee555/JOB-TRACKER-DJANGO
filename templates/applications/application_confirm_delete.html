@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Delete Application · JobTracker{% endblock %}
+
+{% block content %}
+<h2>Delete Application</h2>
+<p>Are you sure you want to delete <strong>{{ object.company }} — {{ object.job_title }}</strong>?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Yes, delete</button>
+  <a href="{% url 'applications:list' %}">Cancel</a>
+</form>
+{% endblock %}
