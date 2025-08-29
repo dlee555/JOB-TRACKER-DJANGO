@@ -2,6 +2,10 @@
     pipenv install djangorestframework - install django rest framework
     pipenv install python-dotenv - install dotenv
     pipenv shell !!! TO ENTER DJANGO SHELL (HIGHLY FORGOTTEN STEP) !!!
+    
+### installed modules:
+    pip install drf-spectacular - auto create documentation for api schema
+    
 
     > vscode python intepreter changed to local project Django intepreter
 
